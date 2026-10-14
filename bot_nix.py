@@ -1,4 +1,3 @@
-"""
 Bot Nix 🐴🏈 — anuncia en Telegram los nuevos episodios del podcast
 y los nuevos artículos del blog de Los Indies de la NFL.
 
@@ -12,8 +11,10 @@ Uso:
   python bot_nix.py --dry-run  -> no envía nada, solo muestra qué enviaría
 """
 
+import calendar
 import html
 import json
+import time
 import os
 import random
 import re
@@ -39,7 +40,8 @@ APPLE_URL = os.environ.get("APPLE_URL", "")
 
 STATE_FILE = Path(__file__).with_name("state.json")
 MAX_POR_EJECUCION = 3  # tope de avisos por feed y ejecución, por si acaso
-GUIDS_GUARDADOS = 200  # cuántos IDs recordar por feed
+GUIDS_GUARDADOS = 5000  # cuántos IDs recordar por feed (de sobra para todo el archivo)
+MAX_EDAD_DIAS = 3  # nunca anuncia nada publicado hace más de estos días
 
 DRY_RUN = "--dry-run" in sys.argv or os.environ.get("DRY_RUN") == "1"
 TEST = "--test" in sys.argv
@@ -164,8 +166,21 @@ def procesar(nombre: str, url: str, estado: dict, construir) -> None:
         return
 
     nuevas = [e for e in entradas if id_entrada(e) not in vistos]
-    nuevas.reverse()  # de la más antigua a la más reciente
-    for e in nuevas[:MAX_POR_EJECUCION]:
+
+    # lo antiguo se marca como visto sin anunciarlo (red de seguridad)
+    limite = time.time() - MAX_EDAD_DIAS * 86400
+    recientes = []
+    for e in nuevas:
+        fecha = e.get("published_parsed") or e.get("updated_parsed")
+        if fecha and calendar.timegm(fecha) < limite:
+            vistos.append(id_entrada(e))
+        else:
+            recientes.append(e)
+    if len(nuevas) != len(recientes):
+        print(f"[{nombre}] {len(nuevas) - len(recientes)} entradas antiguas marcadas como vistas")
+
+    recientes.reverse()  # de la más antigua a la más reciente
+    for e in recientes[:MAX_POR_EJECUCION]:
         texto, imagen, botones = construir(e, feed)
         if enviar(texto, imagen, botones):
             vistos.insert(0, id_entrada(e))
