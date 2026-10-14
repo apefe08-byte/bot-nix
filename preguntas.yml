@@ -1,0 +1,33 @@
+name: Preguntas Indies
+
+on:
+  schedule:
+    # Martes. Dos horas en UTC para cubrir horario de verano e invierno;
+    # el script solo envía cuando en Madrid son las 10:00.
+    - cron: "0 8 * * 2"   # 10:00 en verano
+    - cron: "0 9 * * 2"   # 10:00 en invierno
+  workflow_dispatch:   # botón para probar: envía el mensaje al momento
+
+jobs:
+  preguntar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install requests
+
+      - name: Lanzar #preguntasindies
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_THREAD_ID: ${{ vars.TELEGRAM_THREAD_ID }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            python preguntas.py --ahora
+          else
+            python preguntas.py
+          fi
