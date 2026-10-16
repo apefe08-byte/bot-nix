@@ -237,6 +237,9 @@ def aviso_spoilers(estado: dict) -> None:
         if enviar_ahora and enviar(spoilers.mensaje(partidos), None, []):
             estado["spoilers_ultimo"] = datetime.now(spoilers.MADRID).date().isoformat()
             print("[spoilers] aviso enviado")
+        if spoilers.toca_fin(estado) and enviar(spoilers.mensaje_fin(), None, []):
+            estado["spoilers_fin"] = datetime.now(spoilers.MADRID).date().isoformat()
+            print("[spoilers] fin de spoilers anunciado")
     except Exception as exc:  # noqa: BLE001  (que un fallo aquí no tumbe al resto)
         print(f"[spoilers] error: {exc}")
 

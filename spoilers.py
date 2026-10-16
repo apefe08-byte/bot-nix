@@ -117,6 +117,57 @@ def toca_hoy(estado: dict, ahora: datetime | None = None) -> tuple[bool, list[st
     return bool(partidos), partidos
 
 
+# ------------------------------------------------------------ fin de spoilers
+FIN_INICIO = 12   # a partir de las 12:00
+FIN_FIN = 14      # si a las 14:00 no ha salido, ya no sale
+
+FIN_APERTURAS = [
+    "🔓 <b>¡Ya pasaron las 12:00!</b> Se acabó la ley del silencio.",
+    "🏁 <b>Fin de la zona anti-spoilers.</b> Bot Nix levanta la bandera.",
+    "📢 <b>¡Barra libre de spoilers!</b> Quien no lo haya visto aún, que silencie el grupo YA.",
+    "⏰ <b>Two-minute warning… y tiempo cumplido.</b> Ya se puede hablar del partido sin tapar nada.",
+    "🐴 Bot Nix suelta las riendas: <b>spoilers permitidos.</b>",
+    "🎉 <b>Mediodía en Europa:</b> el partido de anoche ya es de dominio público.",
+]
+
+FIN_INVITACIONES = [
+    "¿MVP del partido? ¿Jugada de la noche? ¿Arbitraje de la vergüenza? Todo vuestro.",
+    "Resultados, dramas, celebraciones y lloros: el vestuario es vuestro.",
+    "Ahora sí: análisis serio, memes o desahogo. Lo que el cuerpo os pida.",
+    "Venga, ¿quién ha ganado la apuesta del desayuno?",
+]
+
+FIN_CIERRES = [
+    "Y quien todavía no lo ha visto… lo sentimos, avisados estabais 😄",
+    "Bot Nix se va a echar la siesta. ¡A debatir! 🏈",
+    "El micro es vuestro. Que no se diga que los Indies no opinan 🎙️",
+    "Recordad: comentar no es lo mismo que sobrerreaccionar. O sí 😏",
+]
+
+
+def mensaje_fin() -> str:
+    return "\n".join(
+        [
+            random.choice(FIN_APERTURAS),
+            "",
+            random.choice(FIN_INVITACIONES),
+            "",
+            random.choice(FIN_CIERRES),
+        ]
+    )
+
+
+def toca_fin(estado: dict, ahora: datetime | None = None) -> bool:
+    """Solo los días en que salió el aviso de la mañana, una vez, entre 12:00 y 14:00."""
+    ahora = ahora or datetime.now(MADRID)
+    hoy = ahora.date().isoformat()
+    return (
+        estado.get("spoilers_ultimo") == hoy
+        and estado.get("spoilers_fin") != hoy
+        and FIN_INICIO <= ahora.hour < FIN_FIN
+    )
+
+
 if __name__ == "__main__":
     if "--ver" in sys.argv:
         ayer = (datetime.now(MADRID) - timedelta(days=1)).strftime("%Y%m%d")
