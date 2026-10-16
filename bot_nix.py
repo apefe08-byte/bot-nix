@@ -25,6 +25,9 @@ from pathlib import Path
 import feedparser
 import requests
 
+from datetime import datetime
+
+import spoilers
 from mensajes import mensaje_blog, mensaje_podcast
 
 # ---------------------------------------------------------------- config
@@ -223,7 +226,19 @@ def main() -> None:
     procesar("podcast", PODCAST_RSS, estado, construir_podcast)
     procesar("blog", BLOG_RSS, estado, construir_blog)
     if not TEST:
+        aviso_spoilers(estado)
         guardar_estado(estado)
+
+
+def aviso_spoilers(estado: dict) -> None:
+    """La mañana después de partido: recordatorio de usar spoilers hasta las 12:00."""
+    try:
+        enviar_ahora, partidos = spoilers.toca_hoy(estado)
+        if enviar_ahora and enviar(spoilers.mensaje(partidos), None, []):
+            estado["spoilers_ultimo"] = datetime.now(spoilers.MADRID).date().isoformat()
+            print("[spoilers] aviso enviado")
+    except Exception as exc:  # noqa: BLE001  (que un fallo aquí no tumbe al resto)
+        print(f"[spoilers] error: {exc}")
 
 
 if __name__ == "__main__":
