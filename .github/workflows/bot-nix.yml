@@ -45,8 +45,20 @@ jobs:
           else python bot_nix.py; fi
 
       - name: Guardar lo ya anunciado
+        if: always()
         run: |
           git config user.name "Bot Nix"
           git config user.email "bot-nix@users.noreply.github.com"
           git add state.json 2>/dev/null || true
-          git diff --cached --quiet || (git commit -m "Bot Nix: estado actualizado" && git push)
+          if git diff --cached --quiet; then
+            echo "Nada nuevo que guardar"
+            exit 0
+          fi
+          git commit -m "Bot Nix: estado actualizado"
+          # si mientras tanto alguien ha subido cambios al repo, los integra y reintenta
+          for intento in 1 2 3 4 5; do
+            git pull --rebase -X theirs origin main && git push && exit 0
+            echo "Reintento $intento…"
+            sleep $((intento * 3))
+          done
+          exit 1
