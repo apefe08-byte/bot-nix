@@ -27,6 +27,7 @@ import requests
 
 from datetime import datetime
 
+import jornada
 import spoilers
 from mensajes import mensaje_blog, mensaje_podcast
 
@@ -227,7 +228,19 @@ def main() -> None:
     procesar("blog", BLOG_RSS, estado, construir_blog)
     if not TEST:
         aviso_spoilers(estado)
+        aviso_jornada(estado)
         guardar_estado(estado)
+
+
+def aviso_jornada(estado: dict) -> None:
+    """Domingo por la mañana: los partidos del día en horario de España."""
+    try:
+        texto = jornada.preparar(estado)
+        if texto and enviar(texto, None, []):
+            estado["jornada_ultimo"] = datetime.now(jornada.MADRID).date().isoformat()
+            print("[jornada] horarios del domingo enviados")
+    except Exception as exc:  # noqa: BLE001  (que un fallo aquí no tumbe al resto)
+        print(f"[jornada] error: {exc}")
 
 
 def aviso_spoilers(estado: dict) -> None:
