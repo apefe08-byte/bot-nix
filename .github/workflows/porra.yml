@@ -1,0 +1,58 @@
+name: Porra Indie
+
+on:
+  schedule:
+    - cron: "*/20 * * * *"   # cada 20 minutos (cron-job.org lo despierta si GitHub se duerme)
+  workflow_dispatch:          # botón para lanzarlo a mano
+    inputs:
+      modo:
+        description: "normal / anunciar (publica el anuncio) / clasificacion (publica la clasificación ya) / dry-run (no envía nada)"
+        default: "normal"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: porra
+  cancel-in-progress: false
+
+jobs:
+  porra:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Ejecutar la porra
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_THREAD_ID: ${{ vars.TELEGRAM_THREAD_ID }}
+          PORRA_URL: ${{ vars.PORRA_URL }}
+        run: |
+          MODO="${{ github.event.inputs.modo }}"
+          case "$MODO" in
+            anunciar)      python porra.py --anunciar ;;
+            clasificacion) python porra.py --clasificacion ;;
+            dry-run)       python porra.py --dry-run ;;
+            *)             python porra.py ;;
+          esac
+
+      - name: Guardar porras
+        run: |
+          git config user.name "Bot Nix"
+          git config user.email "bot-nix@users.noreply.github.com"
+          if [ -n "$(git status --porcelain porra.json)" ]; then
+            git add porra.json
+            git commit -m "Porra: actualizar participantes"
+            for i in 1 2 3; do
+              git pull --rebase -X theirs origin main && git push && break
+              sleep 5
+            done
+          fi
