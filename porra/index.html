@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rumbo a SoFi — La porra Indie</title>
+<meta name="description" content="La porra de Los Indies de la NFL: ¿quién llega a playoffs y quién gana la Super Bowl LXI?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root {
+    --bg: #0b0e14; --panel: #131824; --panel2: #1a2130; --line: #263045;
+    --text: #e8ecf4; --muted: #8b95a8; --accent: #ffb000; --ok: #3ddc84; --bad: #ff5d5d;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Space Grotesk", system-ui, sans-serif; }
+  body { padding-bottom: 110px; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+  header { padding: 28px 0 18px; border-bottom: 1px solid var(--line);
+    background: radial-gradient(120% 140% at 0% 0%, #1d2740 0%, var(--bg) 60%); }
+  .kicker { color: var(--accent); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
+  h1 { margin: 6px 0 4px; font-size: 30px; line-height: 1.05; letter-spacing: -.02em; }
+  .sub { color: var(--muted); margin: 0; font-size: 15px; }
+  .cierre { margin-top: 14px; display: inline-flex; gap: 8px; align-items: center;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 999px;
+    padding: 6px 12px; font-size: 13px; }
+  .cierre b { color: var(--accent); }
+
+  .tabs { position: sticky; top: 0; z-index: 5; background: rgba(11,14,20,.92);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .tabs .wrap { display: flex; gap: 6px; padding-top: 10px; padding-bottom: 10px; }
+  .tab { flex: 1; border: 1px solid var(--line); background: var(--panel); color: var(--muted);
+    padding: 10px 8px; border-radius: 10px; font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; }
+  .tab.on { color: var(--bg); background: var(--accent); border-color: var(--accent); }
+  .tab .n { font-family: "JetBrains Mono", monospace; font-size: 11px; opacity: .8; display: block; font-weight: 500; }
+
+  section { padding: 18px 0 4px; }
+  h2 { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+    margin: 18px 0 10px; display: flex; justify-content: space-between; align-items: baseline; }
+  h2 .estado { font-family: "JetBrains Mono", monospace; letter-spacing: 0; text-transform: none; }
+  h2 .estado.ok { color: var(--ok); }
+
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  @media (min-width: 560px) { .grid.g4 { grid-template-columns: repeat(4, 1fr); } .grid.g3 { grid-template-columns: repeat(3, 1fr); } }
+
+  .team { position: relative; text-align: left; border: 1px solid var(--line); background: var(--panel);
+    color: var(--text); border-radius: 12px; padding: 12px 12px 11px 16px; cursor: pointer; font: inherit;
+    overflow: hidden; transition: transform .08s ease, border-color .15s, background .15s; min-height: 62px; }
+  .team::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--c); }
+  .team:active { transform: scale(.98); }
+  .team .abr { font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; }
+  .team .nom { font-weight: 700; font-size: 16px; margin-top: 3px; }
+  .team.on { border-color: var(--accent); background: linear-gradient(90deg, color-mix(in srgb, var(--c) 35%, var(--panel2)), var(--panel2)); }
+  .team.on .abr { color: var(--accent); }
+  .team.on::after { content: "✓"; position: absolute; right: 10px; bottom: 9px; color: var(--accent); font-weight: 700; }
+  .team:disabled { opacity: .35; cursor: default; }
+
+  .hint { color: var(--muted); font-size: 13px; margin: -4px 0 10px; }
+  .vacio { color: var(--muted); font-size: 14px; border: 1px dashed var(--line); border-radius: 12px; padding: 14px; }
+
+  .barra { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: rgba(19,24,36,.97);
+    border-top: 1px solid var(--line); padding: 12px 0 calc(12px + env(safe-area-inset-bottom)); }
+  .barra .wrap { display: flex; gap: 12px; align-items: center; }
+  .prog { flex: 1; }
+  .prog .t { font-size: 13px; color: var(--muted); }
+  .prog .t b { color: var(--text); font-family: "JetBrains Mono", monospace; }
+  .meter { height: 6px; background: var(--line); border-radius: 99px; margin-top: 6px; overflow: hidden; }
+  .meter i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+  .enviar { border: 0; background: var(--accent); color: #111; font: inherit; font-weight: 700;
+    padding: 13px 16px; border-radius: 12px; cursor: pointer; white-space: nowrap; font-size: 15px; }
+  .enviar:disabled { background: var(--line); color: var(--muted); cursor: default; }
+
+  .aviso { background: #2a1616; border: 1px solid #5a2a2a; color: #ffd0d0; border-radius: 12px; padding: 14px; margin-top: 16px; display: none; }
+  .resumen { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; font-size: 14px; line-height: 1.55; }
+  .resumen b { color: var(--accent); }
+  .puntos { margin-top: 22px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+  .puntos .mono { color: var(--text); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="kicker mono">Los Indies de la NFL · Temporada 2026</div>
+    <h1>Rumbo a SoFi 🏈</h1>
+    <p class="sub">¿Quién llega a playoffs y quién se lleva el anillo en la Super Bowl LXI?</p>
+    <div class="cierre">⏱️ Cierre: <b id="cierreTxt" class="mono">—</b></div>
+    <div class="aviso" id="cerrada">🔒 <b>La porra está cerrada.</b> Ya no se aceptan porras nuevas. ¡En enero vuelve con el bracket de playoffs!</div>
+  </div>
+</header>
+
+<nav class="tabs"><div class="wrap">
+  <button class="tab on" data-tab="0">AFC<span class="n" id="n0">0/8</span></button>
+  <button class="tab" data-tab="1">NFC<span class="n" id="n1">0/8</span></button>
+  <button class="tab" data-tab="2">Super Bowl<span class="n" id="n2">0/1</span></button>
+</div></nav>
+
+<main class="wrap">
+  <section id="tab0"></section>
+  <section id="tab1" hidden></section>
+  <section id="tab2" hidden>
+    <h2>Campeón de la Super Bowl LXI <span class="estado" id="estCampeon"></span></h2>
+    <p class="hint">Elige entre tus 14 equipos de playoffs.</p>
+    <div id="campeon"></div>
+    <h2>Tu porra</h2>
+    <div class="resumen" id="resumen"></div>
+    <div class="puntos">
+      <b>Puntos</b><br>
+      <span class="mono">1</span> por cada equipo en playoffs ·
+      <span class="mono">2</span> por cada campeón de división ·
+      <span class="mono">3</span> por cada #1 seed ·
+      <span class="mono">10</span> por el campeón de la Super Bowl.<br>
+      Puedes cambiar tu porra todas las veces que quieras hasta el cierre: cuenta la última.
+    </div>
+  </section>
+</main>
+
+<div class="barra"><div class="wrap">
+  <div class="prog">
+    <div class="t"><b id="hechos">0</b>/<b>17</b> picks · <span id="falta">Empieza por la AFC</span></div>
+    <div class="meter"><i id="meter"></i></div>
+  </div>
+  <button class="enviar" id="enviar" disabled>Enviar a Bot Nix 🐴</button>
+</div></div>
+
+<script>
+(() => {
+  const BOT = "IndiesnflBot";
+  const ALF = "abcdefghijklmnopqrstuvwxyzABCDEF";
+  const VERSION = "P1";
+  const tgApp = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData ? window.Telegram.WebApp : null;
+  if (tgApp) { tgApp.ready(); tgApp.expand(); }
+
+  let CFG, EQ, records = {};
+  // estado: div[8] (índice equipo o null), wild[2] (Set), seed[2], campeon
+  const S = { div: Array(8).fill(null), wild: [new Set(), new Set()], seed: [null, null], campeon: null };
+
+  const $ = id => document.getElementById(id);
+  const confDe = i => EQ[i].div < 4 ? 0 : 1;
+  const cerrada = () => CFG && Date.now() >= new Date(CFG.cierre).getTime();
+
+  function playoffs() {
+    const set = new Set(S.div.filter(x => x !== null));
+    S.wild.forEach(w => w.forEach(x => set.add(x)));
+    return set;
+  }
+
+  function limpiar() {
+    // quita lo que ya no cuadra tras un cambio
+    for (const c of [0, 1]) {
+      const divs = S.div.slice(c * 4, c * 4 + 4);
+      divs.forEach(d => S.wild[c].delete(d));
+      if (S.seed[c] !== null && !divs.includes(S.seed[c])) S.seed[c] = null;
+    }
+    if (S.campeon !== null && !playoffs().has(S.campeon)) S.campeon = null;
+  }
+
+  function boton(i, on, onClick, disabled) {
+    const e = EQ[i];
+    const b = document.createElement("button");
+    b.className = "team" + (on ? " on" : "");
+    b.style.setProperty("--c", e.color);
+    b.disabled = !!disabled || cerrada();
+    const rec = records[e.abr] ? `<span>${records[e.abr]}</span>` : "";
+    b.innerHTML = `<span class="abr"><span>${e.abr}</span>${rec}</span><div class="nom">${e.corto}</div>`;
+    b.onclick = onClick;
+    return b;
+  }
+
+  function grid(cls, nodos) {
+    const g = document.createElement("div");
+    g.className = "grid " + cls;
+    nodos.forEach(n => g.appendChild(n));
+    return g;
+  }
+
+  function titulo(txt, ok, estado) {
+    const h = document.createElement("h2");
+    h.innerHTML = `<span>${txt}</span><span class="estado ${ok ? "ok" : ""}">${estado}</span>`;
+    return h;
+  }
+
+  function pintarConf(c) {
+    const sec = $("tab" + c);
+    sec.innerHTML = "";
+    const nombreConf = c === 0 ? "AFC" : "NFC";
+
+    for (let d = c * 4; d < c * 4 + 4; d++) {
+      sec.appendChild(titulo("🏆 " + CFG.divisiones[d], S.div[d] !== null, S.div[d] !== null ? "✓" : "elige 1"));
+      const ids = EQ.map((e, i) => i).filter(i => EQ[i].div === d);
+      sec.appendChild(grid("g4", ids.map(i => boton(i, S.div[d] === i, () => {
+        S.div[d] = S.div[d] === i ? null : i; limpiar(); pintar();
+      }))));
+    }
+
+    const w = S.wild[c];
+    sec.appendChild(titulo("🎟️ Comodines " + nombreConf, w.size === 3, `${w.size}/3`));
+    const p = document.createElement("p"); p.className = "hint";
+    p.textContent = "Los 3 equipos que entran sin ganar su división.";
+    sec.appendChild(p);
+    const divs = S.div.slice(c * 4, c * 4 + 4);
+    const cand = EQ.map((e, i) => i).filter(i => confDe(i) === c && !divs.includes(i));
+    sec.appendChild(grid("g3", cand.map(i => boton(i, w.has(i), () => {
+      if (w.has(i)) w.delete(i); else if (w.size < 3) w.add(i);
+      limpiar(); pintar();
+    }, !w.has(i) && w.size >= 3))));
+
+    sec.appendChild(titulo("⭐ #1 seed " + nombreConf, S.seed[c] !== null, S.seed[c] !== null ? "✓" : "elige 1"));
+    const elegidos = divs.filter(x => x !== null);
+    if (elegidos.length < 4) {
+      const v = document.createElement("div"); v.className = "vacio";
+      v.textContent = "Elige primero los 4 campeones de división: el #1 seed sale de ahí.";
+      sec.appendChild(v);
+    } else {
+      sec.appendChild(grid("g4", elegidos.map(i => boton(i, S.seed[c] === i, () => {
+        S.seed[c] = S.seed[c] === i ? null : i; pintar();
+      }))));
+    }
+  }
+
+  function pintarFinal() {
+    const cont = $("campeon");
+    cont.innerHTML = "";
+    const po = [...playoffs()];
+    $("estCampeon").textContent = S.campeon !== null ? "✓" : "";
+    $("estCampeon").className = "estado" + (S.campeon !== null ? " ok" : "");
+    if (po.length < 14) {
+      const v = document.createElement("div"); v.className = "vacio";
+      v.textContent = `Te faltan equipos de playoffs (${po.length}/14). Completa la AFC y la NFC.`;
+      cont.appendChild(v);
+    } else {
+      po.sort((a, b) => a - b);
+      cont.appendChild(grid("g4", po.map(i => boton(i, S.campeon === i, () => {
+        S.campeon = S.campeon === i ? null : i; pintar();
+      }))));
+    }
+    const nom = i => i === null ? "—" : EQ[i].nombre;
+    const lineas = [0, 1].map(c => {
+      const n = c === 0 ? "AFC" : "NFC";
+      const divs = S.div.slice(c * 4, c * 4 + 4).map(nom).join(", ");
+      const wild = [...S.wild[c]].map(i => EQ[i].corto).join(", ") || "—";
+      return `<b>${n}</b> · Divisiones: ${divs}<br>Comodines: ${wild} · #1 seed: ${nom(S.seed[c])}`;
+    });
+    lineas.push(`<b>Campeón SB LXI:</b> ${nom(S.campeon)}`);
+    $("resumen").innerHTML = lineas.join("<br><br>");
+  }
+
+  function cuenta(c) {
+    return S.div.slice(c * 4, c * 4 + 4).filter(x => x !== null).length + S.wild[c].size + (S.seed[c] !== null ? 1 : 0);
+  }
+
+  function codigo() {
+    const w = c => [...S.wild[c]].sort((a, b) => a - b);
+    const idx = [...S.div, ...w(0), ...w(1), ...S.seed, S.campeon];
+    return VERSION + idx.map(i => ALF[i]).join("");
+  }
+
+  function guardar() {
+    try { localStorage.setItem("porraIndie", codigo()); } catch (e) {}
+  }
+
+  function cargarCodigo(cod) {
+    if (!cod || !cod.startsWith(VERSION) || cod.length !== 19) return false;
+    const idx = [...cod.slice(2)].map(ch => ALF.indexOf(ch));
+    if (idx.some(i => i < 0)) return false;
+    // si viene incompleto o raro, se ignora en silencio
+    for (let d = 0; d < 8; d++) if (EQ[idx[d]].div !== d) return false;
+    S.div = idx.slice(0, 8);
+    S.wild = [new Set(idx.slice(8, 11)), new Set(idx.slice(11, 14))];
+    S.seed = idx.slice(14, 16);
+    S.campeon = idx[16];
+    limpiar();
+    return true;
+  }
+
+  function pintar() {
+    pintarConf(0); pintarConf(1); pintarFinal();
+    const n0 = cuenta(0), n1 = cuenta(1), n2 = S.campeon !== null ? 1 : 0;
+    $("n0").textContent = `${n0}/8`; $("n1").textContent = `${n1}/8`; $("n2").textContent = `${n2}/1`;
+    const total = n0 + n1 + n2;
+    $("hechos").textContent = total;
+    $("meter").style.width = (total / 17 * 100) + "%";
+    const completa = total === 17;
+    $("enviar").disabled = !completa || cerrada();
+    $("falta").textContent = cerrada() ? "Porra cerrada" :
+      completa ? "¡Lista para enviar!" :
+      n0 < 8 ? "Te falta la AFC" : n1 < 8 ? "Te falta la NFC" : "Elige tu campeón";
+    if (completa) guardar();
+  }
+
+  document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
+    document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x === t));
+    [0, 1, 2].forEach(k => $("tab" + k).hidden = String(k) !== t.dataset.tab);
+    window.scrollTo({ top: document.querySelector(".tabs").offsetTop, behavior: "smooth" });
+  });
+
+  $("enviar").onclick = () => {
+    const url = `https://t.me/${BOT}?start=${codigo()}`;
+    if (tgApp && tgApp.openTelegramLink) { tgApp.openTelegramLink(url); tgApp.close && setTimeout(() => tgApp.close(), 300); }
+    else window.location.href = url;
+  };
+
+  async function records_espn() {
+    try {
+      const r = await fetch("https://site.api.espn.com/apis/v2/sports/football/nfl/standings");
+      const data = await r.json();
+      const alias = { WAS: "WSH", LA: "LAR", JAC: "JAX" };
+      const recorrer = n => {
+        if (Array.isArray(n)) return n.forEach(recorrer);
+        if (n && typeof n === "object") {
+          if (n.team && Array.isArray(n.stats)) {
+            const abr = alias[n.team.abbreviation] || n.team.abbreviation;
+            const st = n.stats.find(s => s.name === "overall" || s.type === "total");
+            const w = n.stats.find(s => s.name === "wins"), l = n.stats.find(s => s.name === "losses"), t = n.stats.find(s => s.name === "ties");
+            if (w && l) records[abr] = `${w.value}-${l.value}${t && t.value ? "-" + t.value : ""}`;
+            else if (st && st.summary) records[abr] = st.summary;
+          }
+          Object.values(n).forEach(recorrer);
+        }
+      };
+      recorrer(data);
+      pintar();
+    } catch (e) { /* sin balances: no pasa nada */ }
+  }
+
+  fetch("config.json").then(r => r.json()).then(cfg => {
+    CFG = cfg; EQ = cfg.equipos;
+    const f = new Date(cfg.cierre);
+    $("cierreTxt").textContent = f.toLocaleString("es-ES", { timeZone: "Europe/Madrid", weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) + " (Madrid)";
+    if (cerrada()) $("cerrada").style.display = "block";
+    const param = new URLSearchParams(location.search).get("c");
+    let guardado = null;
+    try { guardado = localStorage.getItem("porraIndie"); } catch (e) {}
+    cargarCodigo(param) || cargarCodigo(guardado);
+    pintar();
+    records_espn();
+  });
+})();
+</script>
+</body>
+</html>
