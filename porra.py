@@ -163,6 +163,8 @@ AYUDA = (
     "🐴 <b>¡Hola! Soy Bot Nix.</b>\n\n"
     f"Para jugar a <b>{CONFIG['nombre']}</b> haz tus picks en la página y pulsa "
     "<b>Enviar a Bot Nix</b>. Yo te confirmo por aquí.\n\n"
+    "Si me llega solo un /start, copia el código que te enseña la página "
+    "(empieza por <code>P1</code>) y pégamelo aquí.\n\n"
     "Escribe /mipick para ver tu porra.\n"
     "<i>Ojo: paso a recoger porras cada 20 minutos, así que la confirmación puede tardar un poco.</i>"
 )
@@ -185,6 +187,11 @@ def procesar_mensaje(msg: dict, estado: dict) -> None:
             enviar_privado(chat["id"], "Todavía no tengo tu porra. " + AYUDA)
         return
 
+    # El código puede llegar de dos formas:
+    #  - "/start P1..." desde el botón de la página
+    #  - "P1..." pegado a mano (plan B si Telegram se come el código del botón)
+    if texto.startswith(VERSION) and " " not in texto:
+        texto = "/start " + texto
     if not texto.startswith("/start"):
         return
 
