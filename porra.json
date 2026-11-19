@@ -1,5 +1,5 @@
 {
- "offset": 208757571,
+ "offset": 208757575,
  "participantes": {
   "196394423": {
    "nombre": "Alex",
@@ -16,8 +16,8 @@
      30
     ],
     "comodines": [
+     6,
      7,
-     8,
      13,
      16,
      21,
@@ -29,8 +29,8 @@
     ],
     "campeon": 0
    },
-   "codigo": "P1afkmruyEhinqvxaEa",
-   "fecha": "2026-11-19T19:35:17+01:00"
+   "codigo": "P1afkmruyEghnqvxaEa",
+   "fecha": "2026-11-19T19:45:26+01:00"
   }
  },
  "avisos": {}
