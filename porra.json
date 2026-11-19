@@ -1,5 +1,5 @@
 {
- "offset": 208757584,
+ "offset": 208757598,
  "participantes": {
   "196394423": {
    "nombre": "Alex",
@@ -30,7 +30,69 @@
     "campeon": 0
    },
    "codigo": "P1afkmruyEghnqvxaEa",
-   "fecha": "2026-11-19T19:45:26+01:00"
+   "fecha": "2026-11-19T20:06:23+01:00"
+  },
+  "1070691429": {
+   "nombre": "Diego Pacheco",
+   "usuario": "Paldiego",
+   "picks": {
+    "divisiones": [
+     0,
+     5,
+     10,
+     12,
+     19,
+     20,
+     25,
+     30
+    ],
+    "comodines": [
+     6,
+     7,
+     13,
+     21,
+     23,
+     31
+    ],
+    "seeds": [
+     0,
+     20
+    ],
+    "campeon": 20
+   },
+   "codigo": "P1afkmtuzEghnvxFauu",
+   "fecha": "2026-11-19T20:00:57+01:00"
+  },
+  "529234741": {
+   "nombre": "Santos",
+   "usuario": "santoscr76",
+   "picks": {
+    "divisiones": [
+     0,
+     5,
+     10,
+     12,
+     17,
+     23,
+     25,
+     30
+    ],
+    "comodines": [
+     6,
+     7,
+     13,
+     21,
+     29,
+     31
+    ],
+    "seeds": [
+     0,
+     30
+    ],
+    "campeon": 30
+   },
+   "codigo": "P1afkmrxzEghnvDFaEE",
+   "fecha": "2026-11-19T20:00:42+01:00"
   }
  },
  "avisos": {}
