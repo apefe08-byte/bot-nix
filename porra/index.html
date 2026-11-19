@@ -80,6 +80,18 @@
   .puntos { margin-top: 22px; color: var(--muted); font-size: 13px; line-height: 1.6; }
   .puntos .mono { color: var(--text); }
   [hidden] { display: none !important; }
+  .modal { position: fixed; inset: 0; z-index: 20; background: rgba(5,7,10,.8); display: flex; align-items: flex-end; justify-content: center; }
+  .modal .caja { background: var(--panel); border: 1px solid var(--line); border-radius: 18px 18px 0 0; width: 100%; max-width: 720px;
+    padding: 20px 18px calc(20px + env(safe-area-inset-bottom)); }
+  .modal h3 { margin: 0 0 6px; font-size: 20px; }
+  .modal p { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 8px 0; }
+  .modal .cod { display: flex; gap: 8px; align-items: center; background: var(--bg); border: 1px dashed var(--accent);
+    border-radius: 10px; padding: 10px 12px; margin: 10px 0; }
+  .modal .cod code { flex: 1; font-family: "JetBrains Mono", monospace; font-size: 15px; color: var(--accent); word-break: break-all; }
+  .modal .sec { border: 1px solid var(--line); background: var(--panel2); color: var(--text); font: inherit; font-weight: 700;
+    padding: 9px 12px; border-radius: 10px; cursor: pointer; }
+  .modal .enviar { width: 100%; margin-top: 6px; text-align: center; text-decoration: none; display: block; }
+  .modal .cerrar { background: none; border: 0; color: var(--muted); font: inherit; width: 100%; padding: 12px 0 0; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -125,6 +137,16 @@
     <div class="meter"><i id="meter"></i></div>
   </div>
   <button class="enviar" id="enviar" disabled>Enviar a Bot Nix 🐴</button>
+</div></div>
+
+<div class="modal" id="modal" hidden><div class="caja">
+  <h3>¡Porra lista! 🐴</h3>
+  <p><b>1.</b> Pulsa el botón: se abre el chat con Bot Nix. Dale a <b>Iniciar</b> (o <b>Start</b>).</p>
+  <a class="enviar" id="abrirBot" href="#">Abrir Bot Nix en Telegram</a>
+  <p><b>2.</b> En el chat solo verás <code>/start</code>: es normal, el código va escondido. Bot Nix te confirmará por privado en un rato (pasa cada 20 minutos).</p>
+  <p><b>¿Plan B?</b> Si no te confirma, copia este código y pégaselo a Bot Nix como mensaje:</p>
+  <div class="cod"><code id="codigoTxt"></code><button class="sec" id="copiar">Copiar</button></div>
+  <button class="cerrar" id="cerrarModal">Volver a mi porra</button>
 </div></div>
 
 <script>
@@ -299,10 +321,26 @@
   });
 
   $("enviar").onclick = () => {
-    const url = `https://t.me/${BOT}?start=${codigo()}`;
-    if (tgApp && tgApp.openTelegramLink) { tgApp.openTelegramLink(url); tgApp.close && setTimeout(() => tgApp.close(), 300); }
-    else window.location.href = url;
+    const cod = codigo();
+    const url = `https://t.me/${BOT}?start=${cod}`;
+    $("codigoTxt").textContent = cod;
+    $("abrirBot").href = url;
+    $("copiar").textContent = "Copiar";
+    $("modal").hidden = false;
   };
+  $("abrirBot").onclick = ev => {
+    if (tgApp && tgApp.openTelegramLink) { ev.preventDefault(); tgApp.openTelegramLink($("abrirBot").href); }
+  };
+  $("copiar").onclick = async () => {
+    const cod = $("codigoTxt").textContent;
+    try { await navigator.clipboard.writeText(cod); $("copiar").textContent = "¡Copiado!"; }
+    catch (e) {
+      const r = document.createRange(); r.selectNodeContents($("codigoTxt"));
+      const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      $("copiar").textContent = "Selecciónalo y copia";
+    }
+  };
+  $("cerrarModal").onclick = () => { $("modal").hidden = true; };
 
   async function records_espn() {
     try {
