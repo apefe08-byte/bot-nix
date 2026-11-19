@@ -1,0 +1,37 @@
+{
+ "offset": 208757568,
+ "participantes": {
+  "196394423": {
+   "nombre": "Alex",
+   "usuario": "Alexpf08",
+   "picks": {
+    "divisiones": [
+     0,
+     5,
+     10,
+     12,
+     17,
+     20,
+     24,
+     30
+    ],
+    "comodines": [
+     7,
+     8,
+     13,
+     16,
+     21,
+     23
+    ],
+    "seeds": [
+     0,
+     30
+    ],
+    "campeon": 0
+   },
+   "codigo": "P1afkmruyEhinqvxaEa",
+   "fecha": "2026-11-19T19:35:17+01:00"
+  }
+ },
+ "avisos": {}
+}
