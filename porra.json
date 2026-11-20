@@ -1,5 +1,5 @@
 {
- "offset": 208757602,
+ "offset": 208757627,
  "participantes": {
   "196394423": {
    "nombre": "Alex",
@@ -93,6 +93,192 @@
    },
    "codigo": "P1afkmrxzEghnvDFaEE",
    "fecha": "2026-11-19T20:00:42+01:00"
+  },
+  "766780605": {
+   "nombre": "cristian",
+   "usuario": "Cristian3737",
+   "picks": {
+    "divisiones": [
+     0,
+     5,
+     10,
+     13,
+     16,
+     20,
+     24,
+     30
+    ],
+    "comodines": [
+     7,
+     8,
+     12,
+     17,
+     23,
+     31
+    ],
+    "seeds": [
+     0,
+     30
+    ],
+    "campeon": 0
+   },
+   "codigo": "P1afknquyEhimrxFaEa",
+   "fecha": "2026-11-19T21:14:42+01:00"
+  },
+  "1131746076": {
+   "nombre": "Cpc",
+   "usuario": "Cpc1805",
+   "picks": {
+    "divisiones": [
+     0,
+     5,
+     10,
+     13,
+     17,
+     21,
+     27,
+     30
+    ],
+    "comodines": [
+     2,
+     7,
+     12,
+     20,
+     23,
+     29
+    ],
+    "seeds": [
+     0,
+     30
+    ],
+    "campeon": 5
+   },
+   "codigo": "P1afknrvBEchmuxDaEf",
+   "fecha": "2026-11-20T00:06:02+01:00"
+  },
+  "6359573062": {
+   "nombre": "Carlota",
+   "usuario": "",
+   "picks": {
+    "divisiones": [
+     0,
+     5,
+     10,
+     13,
+     17,
+     21,
+     25,
+     30
+    ],
+    "comodines": [
+     2,
+     6,
+     7,
+     20,
+     23,
+     31
+    ],
+    "seeds": [
+     5,
+     30
+    ],
+    "campeon": 5
+   },
+   "codigo": "P1afknrvzEcghuxFfEf",
+   "fecha": "2026-11-19T21:19:04+01:00"
+  },
+  "5942189340": {
+   "nombre": "Keysser Soze",
+   "usuario": "Keyssersoze1976",
+   "picks": {
+    "divisiones": [
+     0,
+     5,
+     10,
+     13,
+     16,
+     20,
+     25,
+     30
+    ],
+    "comodines": [
+     6,
+     7,
+     12,
+     21,
+     23,
+     31
+    ],
+    "seeds": [
+     10,
+     20
+    ],
+    "campeon": 20
+   },
+   "codigo": "P1afknquzEghmvxFkuu",
+   "fecha": "2026-11-19T21:59:14+01:00"
+  },
+  "7296055786": {
+   "nombre": "Ángel",
+   "usuario": "Angel_Wk5",
+   "picks": {
+    "divisiones": [
+     0,
+     5,
+     10,
+     13,
+     17,
+     20,
+     25,
+     30
+    ],
+    "comodines": [
+     7,
+     8,
+     12,
+     23,
+     29,
+     31
+    ],
+    "seeds": [
+     10,
+     20
+    ],
+    "campeon": 0
+   },
+   "codigo": "P1afknruzEhimxDFkua",
+   "fecha": "2026-11-19T22:08:32+01:00"
+  },
+  "7712079583": {
+   "nombre": "Culla",
+   "usuario": "cullacina",
+   "picks": {
+    "divisiones": [
+     0,
+     5,
+     10,
+     13,
+     17,
+     20,
+     25,
+     30
+    ],
+    "comodines": [
+     6,
+     7,
+     12,
+     21,
+     23,
+     31
+    ],
+    "seeds": [
+     0,
+     30
+    ],
+    "campeon": 30
+   },
+   "codigo": "P1afknruzEghmvxFaEE",
+   "fecha": "2026-11-20T00:58:39+01:00"
   }
  },
  "avisos": {}
