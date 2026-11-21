@@ -1,5 +1,5 @@
 {
- "offset": 208757713,
+ "offset": 208757718,
  "participantes": {
   "196394423": {
    "nombre": "Alex",
@@ -372,6 +372,37 @@
    },
    "codigo": "P1afkmrvzEchnuwxaEE",
    "fecha": "2026-11-20T18:54:57+01:00"
+  },
+  "1314952601": {
+   "nombre": "Jorge",
+   "usuario": "Jorgetm78",
+   "picks": {
+    "divisiones": [
+     0,
+     5,
+     10,
+     13,
+     17,
+     20,
+     27,
+     30
+    ],
+    "comodines": [
+     6,
+     7,
+     12,
+     21,
+     23,
+     31
+    ],
+    "seeds": [
+     0,
+     30
+    ],
+    "campeon": 30
+   },
+   "codigo": "P1afknruBEghmvxFaEE",
+   "fecha": "2026-11-21T18:49:19+01:00"
   }
  },
  "avisos": {}
