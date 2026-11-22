@@ -1,5 +1,5 @@
 {
- "offset": 208757745,
+ "offset": 208757827,
  "participantes": {
   "196394423": {
    "nombre": "Alex",
@@ -403,6 +403,37 @@
    },
    "codigo": "P1afknruBEghmvxFaEE",
    "fecha": "2026-11-21T18:49:19+01:00"
+  },
+  "348806552": {
+   "nombre": "Maida Borràs",
+   "usuario": "VollDamm72",
+   "picks": {
+    "divisiones": [
+     0,
+     5,
+     10,
+     13,
+     17,
+     20,
+     25,
+     30
+    ],
+    "comodines": [
+     6,
+     7,
+     12,
+     22,
+     23,
+     31
+    ],
+    "seeds": [
+     0,
+     30
+    ],
+    "campeon": 5
+   },
+   "codigo": "P1afknruzEghmwxFaEf",
+   "fecha": "2026-11-22T18:45:10+01:00"
   }
  },
  "avisos": {}
