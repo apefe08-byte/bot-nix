@@ -1,5 +1,5 @@
 {
- "offset": 208758010,
+ "offset": 208758022,
  "participantes": {
   "196394423": {
    "nombre": "Alex",
@@ -465,6 +465,37 @@
    },
    "codigo": "P1afknruzEghmvxFaEk",
    "fecha": "2026-11-23T10:11:02+01:00"
+  },
+  "2074932428": {
+   "nombre": "Ángel 🦅",
+   "usuario": "Gavilan1731",
+   "picks": {
+    "divisiones": [
+     0,
+     5,
+     10,
+     12,
+     16,
+     20,
+     24,
+     30
+    ],
+    "comodines": [
+     7,
+     8,
+     13,
+     21,
+     23,
+     29
+    ],
+    "seeds": [
+     0,
+     30
+    ],
+    "campeon": 30
+   },
+   "codigo": "P1afkmquyEhinvxDaEE",
+   "fecha": "2026-11-23T19:56:18+01:00"
   }
  },
  "avisos": {}
