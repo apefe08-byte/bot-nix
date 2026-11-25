@@ -1,5 +1,5 @@
 {
- "offset": 208758165,
+ "offset": 208758209,
  "participantes": {
   "196394423": {
    "nombre": "Alex",
@@ -383,15 +383,15 @@
      10,
      13,
      17,
-     20,
-     27,
+     21,
+     25,
      30
     ],
     "comodines": [
      6,
      7,
      12,
-     21,
+     20,
      23,
      31
     ],
@@ -401,8 +401,8 @@
     ],
     "campeon": 30
    },
-   "codigo": "P1afknruBEghmvxFaEE",
-   "fecha": "2026-11-21T18:49:19+01:00"
+   "codigo": "P1afknrvzEghmuxFaEE",
+   "fecha": "2026-11-25T12:07:22+01:00"
   },
   "348806552": {
    "nombre": "Maida Borràs",
@@ -529,5 +529,7 @@
    "fecha": "2026-11-24T11:34:38+01:00"
   }
  },
- "avisos": {}
+ "avisos": {
+  "recordatorio": "2026-11-25T18:35:10.033669+01:00"
+ }
 }
