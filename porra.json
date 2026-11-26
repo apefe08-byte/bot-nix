@@ -1,5 +1,5 @@
 {
- "offset": 208758279,
+ "offset": 208758298,
  "participantes": {
   "196394423": {
    "nombre": "Alex",
@@ -203,20 +203,20 @@
     ],
     "comodines": [
      6,
-     7,
+     8,
      12,
      21,
      23,
      31
     ],
     "seeds": [
-     10,
+     0,
      20
     ],
     "campeon": 20
    },
-   "codigo": "P1afknquzEghmvxFkuu",
-   "fecha": "2026-11-19T21:59:14+01:00"
+   "codigo": "P1afknquzEgimvxFauu",
+   "fecha": "2026-11-26T07:47:59+01:00"
   },
   "7296055786": {
    "nombre": "Ángel",
