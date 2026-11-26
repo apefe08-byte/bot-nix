@@ -1,5 +1,5 @@
 {
- "offset": 208758209,
+ "offset": 208758271,
  "participantes": {
   "196394423": {
    "nombre": "Alex",
@@ -278,7 +278,7 @@
     "campeon": 30
    },
    "codigo": "P1afknruzEghmvxFaEE",
-   "fecha": "2026-11-20T00:58:39+01:00"
+   "fecha": "2026-11-25T18:57:03+01:00"
   },
   "1651802839": {
    "nombre": "juan Lu",
@@ -306,10 +306,10 @@
      0,
      30
     ],
-    "campeon": 0
+    "campeon": 30
    },
-   "codigo": "P1afknqxzEghmuvFaEa",
-   "fecha": "2026-11-20T17:45:08+01:00"
+   "codigo": "P1afknqxzEghmuvFaEE",
+   "fecha": "2026-11-25T18:56:30+01:00"
   },
   "1470653339": {
    "nombre": "Enrique",
@@ -527,6 +527,68 @@
    },
    "codigo": "P1afknrvzEcimquDaEv",
    "fecha": "2026-11-24T11:34:38+01:00"
+  },
+  "1007653573": {
+   "nombre": "Carlos Ayuso",
+   "usuario": "CarlosAyuso",
+   "picks": {
+    "divisiones": [
+     0,
+     5,
+     10,
+     13,
+     17,
+     22,
+     27,
+     30
+    ],
+    "comodines": [
+     6,
+     8,
+     12,
+     20,
+     21,
+     31
+    ],
+    "seeds": [
+     0,
+     30
+    ],
+    "campeon": 0
+   },
+   "codigo": "P1afknrwBEgimuvFaEa",
+   "fecha": "2026-11-25T19:21:05+01:00"
+  },
+  "7751989921": {
+   "nombre": "Carlos Tabernero Martín",
+   "usuario": "CarlosTM0",
+   "picks": {
+    "divisiones": [
+     0,
+     5,
+     10,
+     13,
+     17,
+     21,
+     26,
+     30
+    ],
+    "comodines": [
+     6,
+     7,
+     12,
+     20,
+     23,
+     29
+    ],
+    "seeds": [
+     0,
+     30
+    ],
+    "campeon": 0
+   },
+   "codigo": "P1afknrvAEghmuxDaEa",
+   "fecha": "2026-11-25T19:22:33+01:00"
   }
  },
  "avisos": {
